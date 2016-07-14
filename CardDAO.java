@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 /* 
  * さくらサーバ上に作成したテーブルから、カードのステータスを取得するクラスを作りました。
  * コードの詳しい内容は夏休み以降に勉強するとして、必要な準備とコード内コメントをざっと読んでください。
@@ -42,12 +44,48 @@ import java.sql.SQLException;
  * 授業内で説明します。
  * 
  * */
-
-
-public class CardDAO{
-    String[] playerCard = new String[5];
-    Connection conn = null;
-    public String[] findCardData(String cardName) {
+public class CardDao{
+    // 見つかればCardを、さもなければnullを返す
+    public List<Card> findCardListData(Deck deck) {
+        Connection conn = null;
+        List<Card> playDeck = new ArrayList<Card>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(Account.JDBC_URL,Account.DB_USER,Account.DB_PASS);
+            for(int i=0;i<deck.deckList.length;i++){
+                String sql = "select * from CARD_TBL where name = ?";
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setString(1, deck.deckList[i]);
+                ResultSet rs = pStmt.executeQuery();
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    int attack = rs.getInt("attack");
+                    int defence = rs.getInt("defence");
+                    int cost = rs.getInt("cost");
+                    //String ability = rs.getString("ability");
+                    Card card = new Card(name, attack, defence, cost);
+                    playDeck.add(card);
+                }
+            }
+            Collections.shuffle(playDeck);
+            return playDeck;
+        }
+        // 例外が起こるとコンソールに出力される
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+    public Card findCardData(String cardName) {
+        Connection conn = null;
         try {
             // JDBC ドライバを指定
             Class.forName("com.mysql.jdbc.Driver");
@@ -63,12 +101,13 @@ public class CardDAO{
             ResultSet rs = pStmt.executeQuery();
             // もし SQL 文を実行した結果が存在するなら、次の行からデータを取得
             while (rs.next()) {
-                playerCard[0] = rs.getString("name");
-                // 下記の 3 つは String に変換して受け取っているので、後で parseInt で int に戻す必要がある
-                playerCard[1] = rs.getString("attack");
-                playerCard[2] = rs.getString("defence");
-                playerCard[3] = rs.getString("cost");
-                playerCard[4] = rs.getString("ability");
+                String name = rs.getString("name");
+                int attack = rs.getInt("attack");
+                int defence = rs.getInt("defence");
+                int cost = rs.getInt("cost");
+                //String ability = rs.getString("ability");
+                Card card = new Card(name, attack, defence, cost);
+                return card;
             }
         }
         // 例外が起こるとコンソールに出力される
@@ -83,6 +122,6 @@ public class CardDAO{
                 }
             }
         }
-        return playerCard;
+        return null;
     }
 }
