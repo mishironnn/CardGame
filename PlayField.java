@@ -170,8 +170,10 @@ public class PlayField extends Applet implements MouseListener,MouseMotionListen
 		if(needRepaint==true){
 			repaint();
 		//相手のデッキ、墓地の枚数
-		boolean needRepainty = false;
-		if(75 <= x && x<= (75 + 150) && 255<= y && y<= 255 + 200  ){
+			boolean needRepainty = false;
+			int A = e.getX();
+			int B = e.getY();
+		if(75 <= A && A<= (75 + 150) && 255<= B && B<= 255 + 200  ){
 			if(mouseOnDecky==false){
 				needRepainty=true;
 			}
