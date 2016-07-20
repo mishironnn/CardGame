@@ -169,6 +169,8 @@ public class PlayField extends Applet implements MouseListener,MouseMotionListen
 		}
 		if(needRepaint==true){
 			repaint();
+			// ここで repaint() しているので ここから下のコードが読まれていないです
+			// 上 2 行の処理をメソッドの最後に持って行って(188行目に続く)
 		//相手のデッキ、墓地の枚数
 			boolean needRepainty = false;
 			int A = e.getX();
@@ -184,7 +186,9 @@ public class PlayField extends Applet implements MouseListener,MouseMotionListen
 			}
 			mouseOnDecky=false;
 		}
-		if(needRepainty==true){
+		if (needRepainty==true){
+			// (needRepaint==true||needRepainty==true)
+			// で期待通り動くと思います
 			repaint();
 		}
 		}
