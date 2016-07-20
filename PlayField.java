@@ -12,7 +12,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 public class PlayField extends Applet implements MouseListener,MouseMotionListener{
-	Image back ; 
+	Image back ;
     Graphics buffer ;
     Image image;
     Image enemy;
@@ -21,6 +21,7 @@ public class PlayField extends Applet implements MouseListener,MouseMotionListen
     String deck2 = "デッキ枚数:";
     String boti2 = "墓地の枚数:";
     boolean mouseOnDeck;
+    boolean mouseOnDecky;
     Duelist dplayer = new Duelist();
     boolean T = false;
     List<Card> d ;
@@ -35,21 +36,30 @@ public class PlayField extends Applet implements MouseListener,MouseMotionListen
         Dimension size = getSize();
         back = createImage(size.width,size.height);
         buffer = back.getGraphics();
-    	
+
     }
     public void paint(Graphics g){
     	buffer.setColor(Color.WHITE);
     	buffer.fillRect(0,0,1800,1800);
         drowBoard(buffer);
         cardpaint(buffer);
-       dplayer.drawString(buffer);
+       dplayer.drawStringme(buffer);
+       dplayer.drawStringyou(buffer);
         Font fo1 = new Font("SansSerif",Font.PLAIN,20);
         buffer.setFont(fo1);
+        //デッキ、墓地の枚数表示
         if(mouseOnDeck==true){
         	buffer.drawString(deck2,1585,635);
         	buffer.drawString(""+dplayer.deck, 1695, 635);
         	buffer.drawString(boti2,1585,655);
         	buffer.drawString(""+dplayer.boti, 1695, 655);
+        }
+        //相手のデッキ、墓地の枚数表示
+        if(mouseOnDecky==true){
+        	buffer.drawString(deck2,85,345);
+        	buffer.drawString(""+dplayer.decky, 195, 345);
+        	buffer.drawString(boti2,85,365);
+        	buffer.drawString(""+dplayer.botiy, 195, 365);
         }
         Deck deck = dd.findDeckList(1);
         if(!T){
@@ -92,10 +102,10 @@ public class PlayField extends Applet implements MouseListener,MouseMotionListen
     	g.setColor(Color.black);
     	Card [] playerField = new Card[5];
     	Card card = cd.findCardData("ドラゴンガード");
-    	playerField[0] =card; 
+    	playerField[0] =card;
     	for(int i = 0;i<5;i++){
     		if(playerField[i]==null){
-    			
+
     		}else{
     		g.drawRoundRect(1275-225*i,545,150,200,10,10);
     		}
@@ -105,43 +115,44 @@ public class PlayField extends Applet implements MouseListener,MouseMotionListen
         }
     }
 	public void mouseClicked(MouseEvent e) {
-		
+
 		/*CardDAO c = new CardDAO();
 		Card card = c.findCardData("ドラゴンガード");
 		System.out.println(Card.name);
 		System.out.println(Card.attack);
 		System.out.println(Card.defence);*/
-		
+
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+
 		int x = e.getX();
 		int y = e.getY();
 		System.out.println("クリックした座標=("+x+","+y+")");
-		
+
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 	public void mouseMoved(MouseEvent e) {
+		//自分のデッキ、墓地の枚数
 		boolean needRepaint = false;
 		int x = e.getX();
 		int y = e.getY();
@@ -158,6 +169,22 @@ public class PlayField extends Applet implements MouseListener,MouseMotionListen
 		}
 		if(needRepaint==true){
 			repaint();
+		//相手のデッキ、墓地の枚数
+		boolean needRepainty = false;
+		if(75 <= x && x<= (75 + 150) && 255<= y && y<= 255 + 200  ){
+			if(mouseOnDecky==false){
+				needRepainty=true;
+			}
+			mouseOnDecky=true;
+		}else{
+			if(mouseOnDecky==true){
+				needRepainty=true;
+			}
+			mouseOnDecky=false;
+		}
+		if(needRepainty==true){
+			repaint();
+		}
 		}
 	}
 }
