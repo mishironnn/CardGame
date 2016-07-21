@@ -9,6 +9,5 @@ public class わからないことクラス {
  *int y = e.getY();
  *このgetはどういう意味ですか？
  * 
- * 
  * */
 }
