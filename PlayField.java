@@ -32,9 +32,8 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		image = getImage(getCodeBase(), "");
-		enemy = getImage(getCodeBase(),
-				"http://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20160420%2F67%2F6426277%2F15%2F570x807x7cca6b9d432c8c398737dd53.jpg%2F300%2F600&twidth=300&theight=0&qlt=80&res_format=jpg&op=r");
-		player = getImage(getCodeBase(), "img/IMG_0700.JPG");
+		enemy = getImage(getCodeBase(),"http://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20160420%2F67%2F6426277%2F15%2F570x807x7cca6b9d432c8c398737dd53.jpg%2F300%2F600&twidth=300&theight=0&qlt=80&res_format=jpg&op=r");
+		player = getImage(getCodeBase(), "https://www.google.co.jp/imgres?imgurl=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FCnfy_AsVMAIyTNj.jpg&imgrefurl=https%3A%2F%2Ftwitter.com%2Finunekotorakuma&docid=cciCVm8R6WB07M&tbnid=G-2IqNAEYXMjMM%3A&w=639&h=800&bih=971&biw=1920&ved=0ahUKEwjLpLG2pIfOAhUGHJQKHeNCCNsQMwgeKAAwAA&iact=mrc&uact=8");
 		Dimension size = getSize();
 		back = createImage(size.width, size.height);
 		buffer = back.getGraphics();
@@ -58,7 +57,7 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 			buffer.drawString("" + dplayer.boti, 1695, 655);
 		}
 		// 相手のデッキ、墓地の枚数表示
-		if (mouseOnDecky == false) {
+		if (mouseOnDecky == true) {
 			buffer.drawString(deck2, 85, 345);
 			buffer.drawString("" + dplayer.decky, 195, 345);
 			buffer.drawString(boti2, 85, 365);
@@ -70,9 +69,9 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 			T = true;
 		}
 		// カードの名前などのST表示
-		/*今やりたいこと
-		 * card nameが枠からはみでるときはフォントをちいさくする
-		 * */
+		/*
+		 * 今やりたいこと card nameが枠からはみでるときはフォントをちいさくする
+		 */
 		Card card = d.get(0);
 		buffer.setColor(Color.black);
 		Font fo2 = new Font("SansSerif", Font.PLAIN, 20);
@@ -186,24 +185,25 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		}
 		if (needRepaint == true) {
 			repaint();
-			// 相手のデッキ、墓地の枚数
-			boolean needRepainty = false;
-			int A = e.getX();
-			int B = e.getY();
-			if (75 <= A && A <= (75 + 150) && 255 <= B && B <= 255 + 200) {
-				if (mouseOnDecky == false) {
-					needRepainty = true;
-				}
-				mouseOnDecky = true;
-			} else {
-				if (mouseOnDecky == true) {
-					needRepainty = true;
-				}
-				mouseOnDecky = false;
+		}
+		// 相手のデッキ、墓地の枚数
+		boolean needRepainty = false;
+		int A = e.getX();
+		int B = e.getY();
+		if (75 <= A && A <= (75 + 150) && 255 <= B && B <= 255 + 200) {
+			if (mouseOnDecky == false) {
+				needRepainty = true;
 			}
-			if (needRepainty == true) {
-				repaint();
+			mouseOnDecky = true;
+		} else {
+			if (mouseOnDecky == true) {
+				needRepainty = true;
 			}
+			mouseOnDecky = false;
+		}
+		if (needRepaint == true || needRepainty == true) {
+			repaint();
+
 		}
 	}
 }
