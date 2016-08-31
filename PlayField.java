@@ -46,6 +46,7 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		drowBoard(buffer);
 		cardpaint(buffer);
 		handCard(buffer);
+		handCardOpponent(buffer);
 		dplayer.drawStringme(buffer);
 		dplayer.drawStringyou(buffer);
 		Font fo1 = new Font("SansSerif", Font.PLAIN, 20);
@@ -129,7 +130,23 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 	        }
 	    }
 	}
-
+	public void cardpaintOpponent(Graphics g){
+	    g.setColor(Color.black);
+	    Card [] playerField = new Card[5];
+	    playerField[0] = cd.findCardData("a");
+	    playerField[1] = cd.findCardData("b");
+	    playerField[2] = null;
+	    playerField[3] = cd.findCardData("d");
+	    playerField[4] = cd.findCardData("e");
+	    for(int i = 0;i<5;i++){
+	        if(playerField[i]!=null){
+	            g.drawRoundRect(375+225*i,245,150,200,10,10);
+	            g.drawString(playerField[i].name,400+225*i,280);
+	            g.drawString("攻:"+playerField[i].attack,400+225*i,340);
+	            g.drawString("防:"+playerField[i].defence,400+225*i,400);
+	        }
+	    }
+	}
 	public void handCard(Graphics g){
 		g.drawRoundRect(95+225*2,800,150,200,10,10);
 		g.drawRoundRect(175+225*2,800,150,200,10,10);
@@ -139,6 +156,17 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		g.drawRoundRect(495+225*2,800,150,200,10,10);
 		g.drawRoundRect(575+225*2,800,150,200,10,10);
 		g.drawRoundRect(655+225*2,800,150,200,10,10);
+	}
+	
+	public void handCardOpponent(Graphics g){
+		g.drawRoundRect(95+225*2,15,150,200,10,10);
+		g.drawRoundRect(175+225*2,15,150,200,10,10);
+		g.drawRoundRect(255+225*2,15,150,200,10,10);
+		g.drawRoundRect(335+225*2,15,150,200,10,10);
+		g.drawRoundRect(415+225*2,15,150,200,10,10);
+		g.drawRoundRect(495+225*2,15,150,200,10,10);
+		g.drawRoundRect(575+225*2,15,150,200,10,10);
+		g.drawRoundRect(655+225*2,15,150,200,10,10);
 	}
 	public void mouseClicked(MouseEvent e) {
 
