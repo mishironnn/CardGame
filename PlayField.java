@@ -131,8 +131,14 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 	}
 
 	public void handCard(Graphics g){
+		g.drawRoundRect(95+225*2,800,150,200,10,10);
+		g.drawRoundRect(175+225*2,800,150,200,10,10);
+		g.drawRoundRect(255+225*2,800,150,200,10,10);
 		g.drawRoundRect(335+225*2,800,150,200,10,10);
 		g.drawRoundRect(415+225*2,800,150,200,10,10);
+		g.drawRoundRect(495+225*2,800,150,200,10,10);
+		g.drawRoundRect(575+225*2,800,150,200,10,10);
+		g.drawRoundRect(655+225*2,800,150,200,10,10);
 	}
 	public void mouseClicked(MouseEvent e) {
 
