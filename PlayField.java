@@ -32,8 +32,10 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		image = getImage(getCodeBase(), "");
-		enemy = getImage(getCodeBase(),"http://cdn-ak.f.st-hatena.com/images/fotolife/c/chemi_mizuki/20160711/20160711090921.png");
-		player = getImage(getCodeBase(), "http://theanimesocialnetwork.com/wp-content/uploads/2016/07/cute-girls-from-vns-anime-manga-e38381e3838ee383ace383a0e8a1a8e7b499e7b5b5-by-e3828fe3818de4b889e697a5e79baee69db1e3839fefbc93efbc96ab-1-1024x1024.jpg");
+		enemy = getImage(getCodeBase(),
+				"http://cdn-ak.f.st-hatena.com/images/fotolife/c/chemi_mizuki/20160711/20160711090921.png");
+		player = getImage(getCodeBase(),
+				"http://theanimesocialnetwork.com/wp-content/uploads/2016/07/cute-girls-from-vns-anime-manga-e38381e3838ee383ace383a0e8a1a8e7b499e7b5b5-by-e3828fe3818de4b889e697a5e79baee69db1e3839fefbc93efbc96ab-1-1024x1024.jpg");
 		Dimension size = getSize();
 		back = createImage(size.width, size.height);
 		buffer = back.getGraphics();
@@ -74,12 +76,12 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		buffer.setColor(Color.black);
 		Font fo2 = new Font("SansSerif", Font.PLAIN, 20);
 		buffer.setFont(fo2);
-		//buffer.drawString(card.name, 1310, 580);
+		// buffer.drawString(card.name, 1310, 580);
 		Font fo3 = new Font("SansSerif", Font.PLAIN, 40);
 		buffer.setFont(fo3);
-		//buffer.drawString("" + card.attack, 1280, 740);
-		//buffer.drawString("" + card.defence, 1400, 740);
-		//buffer.drawString("" + card.cost, 1280, 580);
+		// buffer.drawString("" + card.attack, 1280, 740);
+		// buffer.drawString("" + card.defence, 1400, 740);
+		// buffer.drawString("" + card.cost, 1280, 580);
 		g.drawImage(back, 0, 0, this);
 	}
 
@@ -105,69 +107,73 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		g.drawImage(image, 1050, 1250, -800, -650, this);
 	}
 
-	public void cardpaint(Graphics g){
-	    g.setColor(Color.black);
-	    Card [] playerField = new Card[5];
-	    playerField[0] = cd.findCardData("a");
-	    playerField[1] = cd.findCardData("b");
-	    playerField[2] = null;
-	    playerField[3] = cd.findCardData("d");
-	    playerField[4] = cd.findCardData("e");
-	    for(int i = 0;i<5;i++){
-	        if(playerField[i]!=null){
-	            g.drawRoundRect(1275-225*i,545,150,200,10,10);
-	            g.drawString(playerField[i].name,1300-225*i,580);
-	            g.drawString("攻:"+playerField[i].attack,1300-225*i,640);
-	            g.drawString("防:"+playerField[i].defence,1300-225*i,700);
-	        }
-	    }
-	    for(int i = 0;i<5;i++){
-	        if(playerField[i]!=null){
-	            g.drawRoundRect(375+225*i,245,150,200,10,10);
-	            g.drawString(playerField[i].name,400+225*i,280);
-	            g.drawString("攻:"+playerField[i].attack,400+225*i,340);
-	            g.drawString("防:"+playerField[i].defence,400+225*i,400);
-	        }
-	    }
+	public void cardpaint(Graphics g) {
+		g.setColor(Color.black);
+		Card[] playerField = new Card[5];
+		playerField[0] = cd.findCardData("a");
+		playerField[1] = cd.findCardData("b");
+		playerField[2] = null;
+		playerField[3] = cd.findCardData("d");
+		playerField[4] = cd.findCardData("e");
+		for (int i = 0; i < 5; i++) {
+			if (playerField[i] != null) {
+				g.drawRoundRect(1275 - 225 * i, 545, 150, 200, 10, 10);
+				g.drawString(playerField[i].name, 1300 - 225 * i, 580);
+				g.drawString("攻:" + playerField[i].attack, 1300 - 225 * i, 640);
+				g.drawString("防:" + playerField[i].defence, 1300 - 225 * i, 700);
+			}
+		}
 	}
-	public void cardpaintOpponent(Graphics g){
-	    g.setColor(Color.black);
-	    Card [] playerField = new Card[5];
-	    playerField[0] = cd.findCardData("a");
-	    playerField[1] = cd.findCardData("b");
-	    playerField[2] = null;
-	    playerField[3] = cd.findCardData("d");
-	    playerField[4] = cd.findCardData("e");
-	    for(int i = 0;i<5;i++){
-	        if(playerField[i]!=null){
-	            g.drawRoundRect(375+225*i,245,150,200,10,10);
-	            g.drawString(playerField[i].name,400+225*i,280);
-	            g.drawString("攻:"+playerField[i].attack,400+225*i,340);
-	            g.drawString("防:"+playerField[i].defence,400+225*i,400);
-	        }
-	    }
+
+	public void cardpaintOpponent(Graphics g) {
+		g.setColor(Color.black);
+		Card[] playerField = new Card[5];
+		playerField[0] = cd.findCardData("a");
+		playerField[1] = cd.findCardData("b");
+		playerField[2] = null;
+		playerField[3] = cd.findCardData("d");
+		playerField[4] = cd.findCardData("e");
+		for (int i = 0; i < 5; i++) {
+			if (playerField[i] != null) {
+				g.drawRoundRect(375 + 225 * i, 245, 150, 200, 10, 10);
+				g.drawString(playerField[i].name, 400 + 225 * i, 280);
+				g.drawString("攻:" + playerField[i].attack, 400 + 225 * i, 340);
+				g.drawString("防:" + playerField[i].defence, 400 + 225 * i, 400);
+			}
+		}
 	}
-	public void handCard(Graphics g){
-		g.drawRoundRect(95+225*2,800,150,200,10,10);
-		g.drawRoundRect(175+225*2,800,150,200,10,10);
-		g.drawRoundRect(255+225*2,800,150,200,10,10);
-		g.drawRoundRect(335+225*2,800,150,200,10,10);
-		g.drawRoundRect(415+225*2,800,150,200,10,10);
-		g.drawRoundRect(495+225*2,800,150,200,10,10);
-		g.drawRoundRect(575+225*2,800,150,200,10,10);
-		g.drawRoundRect(655+225*2,800,150,200,10,10);
+
+	public void handCard(Graphics g) {
+		Card[] playerField = new Card[8];
+		playerField[0] = cd.findCardData("f");
+		playerField[1] = cd.findCardData("g");
+		playerField[2] = cd.findCardData("e");
+		playerField[3] = cd.findCardData("h");
+		playerField[4] = cd.findCardData("i");
+		playerField[5] = cd.findCardData("a");;
+		playerField[6] = cd.findCardData("b");;
+		playerField[7] = cd.findCardData("c");;
+		for (int i = 0; i < 8; i++) {
+			if (playerField[i] != null&&i%2==0) {
+				g.drawRoundRect(175+80*i + 225 * 2, 800, 150, 200, 10, 10);
+			}else{
+				g.drawRoundRect(15+80*i + 225 * 2, 800, 150, 200, 10, 10);
+				
+			}
+		}
 	}
-	
-	public void handCardOpponent(Graphics g){
-		g.drawRoundRect(95+225*2,15,150,200,10,10);
-		g.drawRoundRect(175+225*2,15,150,200,10,10);
-		g.drawRoundRect(255+225*2,15,150,200,10,10);
-		g.drawRoundRect(335+225*2,15,150,200,10,10);
-		g.drawRoundRect(415+225*2,15,150,200,10,10);
-		g.drawRoundRect(495+225*2,15,150,200,10,10);
-		g.drawRoundRect(575+225*2,15,150,200,10,10);
-		g.drawRoundRect(655+225*2,15,150,200,10,10);
+
+	public void handCardOpponent(Graphics g) {
+		g.drawRoundRect(95 + 225 * 2, 15, 150, 200, 10, 10);
+		g.drawRoundRect(175 + 225 * 2, 15, 150, 200, 10, 10);
+		g.drawRoundRect(255 + 225 * 2, 15, 150, 200, 10, 10);
+		g.drawRoundRect(335 + 225 * 2, 15, 150, 200, 10, 10);
+		g.drawRoundRect(415 + 225 * 2, 15, 150, 200, 10, 10);
+		g.drawRoundRect(495 + 225 * 2, 15, 150, 200, 10, 10);
+		g.drawRoundRect(575 + 225 * 2, 15, 150, 200, 10, 10);
+		g.drawRoundRect(655 + 225 * 2, 15, 150, 200, 10, 10);
 	}
+
 	public void mouseClicked(MouseEvent e) {
 
 	}
