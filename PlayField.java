@@ -32,8 +32,8 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		image = getImage(getCodeBase(), "");
-		enemy = getImage(getCodeBase(),"http://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20160420%2F67%2F6426277%2F15%2F570x807x7cca6b9d432c8c398737dd53.jpg%2F300%2F600&twidth=300&theight=0&qlt=80&res_format=jpg&op=r");
-		player = getImage(getCodeBase(), "https://www.google.co.jp/imgres?imgurl=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FCnfy_AsVMAIyTNj.jpg&imgrefurl=https%3A%2F%2Ftwitter.com%2Finunekotorakuma&docid=cciCVm8R6WB07M&tbnid=G-2IqNAEYXMjMM%3A&w=639&h=800&bih=971&biw=1920&ved=0ahUKEwjLpLG2pIfOAhUGHJQKHeNCCNsQMwgeKAAwAA&iact=mrc&uact=8");
+		enemy = getImage(getCodeBase(),"http://cdn-ak.f.st-hatena.com/images/fotolife/c/chemi_mizuki/20160711/20160711090921.png");
+		player = getImage(getCodeBase(), "http://theanimesocialnetwork.com/wp-content/uploads/2016/07/cute-girls-from-vns-anime-manga-e38381e3838ee383ace383a0e8a1a8e7b499e7b5b5-by-e3828fe3818de4b889e697a5e79baee69db1e3839fefbc93efbc96ab-1-1024x1024.jpg");
 		Dimension size = getSize();
 		back = createImage(size.width, size.height);
 		buffer = back.getGraphics();
@@ -45,6 +45,7 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		buffer.fillRect(0, 0, 1800, 1800);
 		drowBoard(buffer);
 		cardpaint(buffer);
+		handCard(buffer);
 		dplayer.drawStringme(buffer);
 		dplayer.drawStringyou(buffer);
 		Font fo1 = new Font("SansSerif", Font.PLAIN, 20);
@@ -68,20 +69,16 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 			d = cd.findCardListData(deck);
 			T = true;
 		}
-		// カードの名前などのST表示
-		/*
-		 * 今やりたいこと card nameが枠からはみでるときはフォントをちいさくする
-		 */
 		Card card = d.get(0);
 		buffer.setColor(Color.black);
 		Font fo2 = new Font("SansSerif", Font.PLAIN, 20);
 		buffer.setFont(fo2);
-		buffer.drawString(card.name, 1310, 580);
+		//buffer.drawString(card.name, 1310, 580);
 		Font fo3 = new Font("SansSerif", Font.PLAIN, 40);
 		buffer.setFont(fo3);
-		buffer.drawString("" + card.attack, 1280, 740);
-		buffer.drawString("" + card.defence, 1400, 740);
-		buffer.drawString("" + card.cost, 1280, 580);
+		//buffer.drawString("" + card.attack, 1280, 740);
+		//buffer.drawString("" + card.defence, 1400, 740);
+		//buffer.drawString("" + card.cost, 1280, 580);
 		g.drawImage(back, 0, 0, this);
 	}
 
@@ -100,41 +97,47 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		g.fillRoundRect(75, 255, 150, 200, 10, 10);
 		g.setColor(Color.blue);
 		g.fillRoundRect(1800, 440, 120, 120, 20, 20);
-		g.drawImage(enemy, 1575, 255, 150, 200, this);
-		g.drawImage(player, 75, 545, 150, 200, this);
+		g.drawImage(enemy, 1525, 255, 250, 200, this);
+		g.drawImage(player, 25, 545, 250, 200, this);
 		g.drawImage(image, 0, 0, this);
 		// 反転させたい時はこんな感じ
 		g.drawImage(image, 1050, 1250, -800, -650, this);
 	}
 
-	public void cardpaint(Graphics g) {
-		g.setColor(Color.black);
-		Card[] playerField = new Card[5];
-		Card card = cd.findCardData("ドラゴンガード");
-		playerField[0] = card;
-		for (int i = 0; i < 5; i++) {
-			if (playerField[i] == null) {
-
-			} else {
-				g.drawRoundRect(1275 - 225 * i, 545, 150, 200, 10, 10);
-			}
-		}
-		for (int i = 0; i < 5; i++) {
-			g.drawRoundRect(1275 - 225 * i, 255, 150, 200, 10, 10);
-		}
+	public void cardpaint(Graphics g){
+	    g.setColor(Color.black);
+	    Card [] playerField = new Card[5];
+	    playerField[0] = cd.findCardData("a");
+	    playerField[1] = cd.findCardData("b");
+	    playerField[2] = null;
+	    playerField[3] = cd.findCardData("d");
+	    playerField[4] = cd.findCardData("e");
+	    for(int i = 0;i<5;i++){
+	        if(playerField[i]!=null){
+	            g.drawRoundRect(1275-225*i,545,150,200,10,10);
+	            g.drawString(playerField[i].name,1300-225*i,580);
+	            g.drawString("攻:"+playerField[i].attack,1300-225*i,640);
+	            g.drawString("防:"+playerField[i].defence,1300-225*i,700);
+	        }
+	    }
+	    for(int i = 0;i<5;i++){
+	        if(playerField[i]!=null){
+	            g.drawRoundRect(375+225*i,245,150,200,10,10);
+	            g.drawString(playerField[i].name,400+225*i,280);
+	            g.drawString("攻:"+playerField[i].attack,400+225*i,340);
+	            g.drawString("防:"+playerField[i].defence,400+225*i,400);
+	        }
+	    }
 	}
 
+	public void handCard(Graphics g){
+		g.drawRoundRect(335+225*2,800,150,200,10,10);
+		g.drawRoundRect(415+225*2,800,150,200,10,10);
+	}
 	public void mouseClicked(MouseEvent e) {
 
-		/*
-		 * CardDAO c = new CardDAO(); Card card = c.findCardData("ドラゴンガード");
-		 * System.out.println(Card.name); System.out.println(Card.attack);
-		 * System.out.println(Card.defence);
-		 */
-
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 
 		int x = e.getX();
@@ -143,25 +146,21 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 
