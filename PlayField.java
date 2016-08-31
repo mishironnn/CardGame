@@ -144,7 +144,7 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 	}
 
 	public void handCard(Graphics g) {
-		Card[] playerField = new Card[8];
+		/*Card[] playerField = new Card[8];
 		playerField[0] = cd.findCardData("f");
 		playerField[1] = cd.findCardData("g");
 		playerField[2] = cd.findCardData("e");
@@ -156,11 +156,14 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		for (int i = 0; i < 8; i++) {
 			if (playerField[i] != null&&i%2==0) {
 				g.drawRoundRect(175+80*i + 225 * 2, 800, 150, 200, 10, 10);
+				//g.drawString(playerField[i].name, 200 + 225 * i, 280);
+				//g.drawString("攻:" + playerField[i].attack, 400 + 225 * i, 340);
+				//g.drawString("防:" + playerField[i].defence, 400 + 225 * i, 400);
 			}else{
 				g.drawRoundRect(15+80*i + 225 * 2, 800, 150, 200, 10, 10);
 				
 			}
-		}
+		}*/
 	}
 
 	public void handCardOpponent(Graphics g) {
