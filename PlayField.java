@@ -153,20 +153,20 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		playerField[2] = cd.findCardData("e");
 		playerField[3] = cd.findCardData("h");
 		playerField[4] = cd.findCardData("i");
-		playerField[5] = cd.findCardData("a");;
-		playerField[6] = cd.findCardData("b");;
-		playerField[7] = cd.findCardData("c");;
+		playerField[5] = cd.findCardData("a");
+		playerField[6] = cd.findCardData("b");
+		playerField[7] = cd.findCardData("c");
 		for (int i = 0; i < 8; i++) {
-			if (playerField[i] != null&&i%2==0) {
-				g.drawRoundRect(175+80*i + 225 * 2, 800, 150, 200, 10, 10);
-				g.drawString(playerField[i].name, 200+80*i + 225 * 2, 835);
-				g.drawString("攻:" + playerField[i].attack, 185+80*i + 225 * 2, 895);
-				g.drawString("防:" + playerField[i].defence, 185+80*i + 225 * 2, 955);
-			}else{
-				g.drawRoundRect(15+80*i + 225 * 2, 800, 150, 200, 10, 10);
-				g.drawString(playerField[i].name, 40+80*i + 225 * 2, 835);
-				g.drawString("攻:" + playerField[i].attack, 25+80*i + 225 * 2, 895);
-				g.drawString("防:" + playerField[i].defence, 25+80*i + 225 * 2, 955);
+			if (playerField[i] != null && i % 2 == 0) {
+				g.drawRoundRect(175 + 80 * i + 225 * 2, 800, 150, 200, 10, 10);
+				g.drawString(playerField[i].name, 200 + 80 * i + 225 * 2, 835);
+				g.drawString("攻:" + playerField[i].attack, 185 + 80 * i + 225 * 2, 895);
+				g.drawString("防:" + playerField[i].defence, 185 + 80 * i + 225 * 2, 955);
+			} else {
+				g.drawRoundRect(15 + 80 * i + 225 * 2, 800, 150, 200, 10, 10);
+				g.drawString(playerField[i].name, 40 + 80 * i + 225 * 2, 835);
+				g.drawString("攻:" + playerField[i].attack, 25 + 80 * i + 225 * 2, 895);
+				g.drawString("防:" + playerField[i].defence, 25 + 80 * i + 225 * 2, 955);
 			}
 		}
 	}
