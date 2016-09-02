@@ -12,6 +12,10 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 public class PlayField extends Applet implements MouseListener, MouseMotionListener {
+	Card[] playerField = new Card[5];
+	Card[] OplayerField = new Card[5];
+	Card[] playerHand = new Card[7];
+	Card[] OplayerHand = new Card[7];
 	Image back;
 	Graphics buffer;
 	Image image;
@@ -110,7 +114,7 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 
 	public void cardpaint(Graphics g) {
 		g.setColor(Color.black);
-		Card[] playerField = new Card[5];
+		//Card[] playerField = new Card[5];
 		playerField[0] = cd.findCardData("a");
 		playerField[1] = cd.findCardData("b");
 		playerField[2] = null;
@@ -128,18 +132,18 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 
 	public void cardpaintOpponent(Graphics g) {
 		g.setColor(Color.black);
-		Card[] playerField = new Card[5];
-		playerField[0] = cd.findCardData("a");
-		playerField[1] = cd.findCardData("b");
-		playerField[2] = null;
-		playerField[3] = cd.findCardData("d");
-		playerField[4] = cd.findCardData("e");
+		//Card[] OplayerField = new Card[5];
+		OplayerField[0] = cd.findCardData("a");
+		OplayerField[1] = cd.findCardData("b");
+		OplayerField[2] = null;
+		OplayerField[3] = cd.findCardData("d");
+		OplayerField[4] = cd.findCardData("e");
 		for (int i = 0; i < 5; i++) {
-			if (playerField[i] != null) {
+			if (OplayerField[i] != null) {
 				g.drawRoundRect(375 + 225 * i, 245, 150, 200, 10, 10);
-				g.drawString(playerField[i].name, 400 + 225 * i, 280);
-				g.drawString("攻:" + playerField[i].attack, 400 + 225 * i, 340);
-				g.drawString("防:" + playerField[i].defence, 400 + 225 * i, 400);
+				g.drawString(OplayerField[i].name, 400 + 225 * i, 280);
+				g.drawString("攻:" + OplayerField[i].attack, 400 + 225 * i, 340);
+				g.drawString("防:" + OplayerField[i].defence, 400 + 225 * i, 400);
 			}
 		}
 	}
