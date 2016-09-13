@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -27,6 +28,30 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 	List<Card> d;
 	CardDao cd = new CardDao();
 	DeckDao dd = new DeckDao();
+	Card[] playerField = new Card[5];
+	Card[] OplayerField = new Card[5];
+	Card[] playerHand = new Card[7];
+	Card[] OplayerHand = new Card[7];
+	String msg1 = "";
+	String msg2 = "";
+	String msg3 = "";
+	String msg4 = "";
+	int HP = 20;
+	int MP = 10;
+	int MAX_MP = 10;
+	int tefuda = 0;
+	int boti = 0;
+	int deck = 40;
+	// 相手
+	int HPy = 20;
+	int MPy = 0;
+	int MAX_MPy = 0;
+	int tefuday = 0;
+	int botiy = 0;
+	int decky = 40;
+	String sura = "-";
+	Card card;
+	int count;
 
 	public void init() {
 		addMouseListener(this);
@@ -42,6 +67,44 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 
 	}
 
+	public void drawStringyou(Graphics g) {
+		// ターン時のMPの表示
+		Font fo1 = new Font("SansSerif", Font.PLAIN, 80);
+		Graphics2D g2 = (Graphics2D) g;
+		g.setColor(Color.black);
+		g2.setFont(fo1);
+		g2.drawString(sura, 330, 97);
+		g2.drawString(sura, 340, 97);
+		g2.drawString(sura, 360, 97);
+		g2.drawString("" + MP, 335, 70);
+		g2.drawString("" + MAX_MP, 335, 140);
+		Font fo2 = new Font("SansSerif", Font.PLAIN, 200);
+		Graphics2D g3 = (Graphics2D) g;
+		// HPの表示
+		g3.setColor(Color.black);
+		g3.setFont(fo2);
+		g3.drawString("" + HP, 1550, 200);
+	}
+
+	public void drawStringme(Graphics g) {
+		// ターン時のMPの表示
+		Font fo1 = new Font("SansSerif", Font.PLAIN, 80);
+		Graphics2D g2 = (Graphics2D) g;
+		g.setColor(Color.black);
+		g2.setFont(fo1);
+		g2.drawString(sura, 1425, 940);
+		g2.drawString(sura, 1435, 940);
+		g2.drawString(sura, 1455, 940);
+		g2.drawString("" + MP, 1430, 913);
+		g2.drawString("" + MAX_MP, 1430, 983);
+		Font fo2 = new Font("SansSerif", Font.PLAIN, 200);
+		Graphics2D g3 = (Graphics2D) g;
+		// HPの表示
+		g3.setColor(Color.black);
+		g3.setFont(fo2);
+		g3.drawString("" + HP, 50, 925);
+	}
+
 	public void paint(Graphics g) {
 		buffer.setColor(Color.WHITE);
 		buffer.fillRect(0, 0, 1800, 1800);
@@ -54,6 +117,10 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		dplayer.drawStringyou(buffer);
 		Font fo1 = new Font("SansSerif", Font.PLAIN, 20);
 		buffer.setFont(fo1);
+		buffer.drawString(msg1, 1520, 800);
+		buffer.drawString(msg2, 1520, 825);
+		buffer.drawString(msg3, 1520, 850);
+		buffer.drawString(msg4, 1520, 875);
 		// デッキ、墓地の枚数表示
 		if (mouseOnDeck == true) {
 			buffer.drawString(deck2, 1585, 635);
@@ -110,7 +177,6 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 
 	public void cardpaint(Graphics g) {
 		g.setColor(Color.black);
-		Card[] playerField = new Card[5];
 		playerField[0] = cd.findCardData("a");
 		playerField[1] = cd.findCardData("b");
 		playerField[2] = null;
@@ -128,18 +194,17 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 
 	public void cardpaintOpponent(Graphics g) {
 		g.setColor(Color.black);
-		Card[] playerField = new Card[5];
-		playerField[0] = cd.findCardData("a");
-		playerField[1] = cd.findCardData("b");
-		playerField[2] = null;
-		playerField[3] = cd.findCardData("d");
-		playerField[4] = cd.findCardData("e");
+		OplayerField[0] = cd.findCardData("a");
+		OplayerField[1] = cd.findCardData("b");
+		OplayerField[2] = null;
+		OplayerField[3] = cd.findCardData("d");
+		OplayerField[4] = cd.findCardData("e");
 		for (int i = 0; i < 5; i++) {
-			if (playerField[i] != null) {
+			if (OplayerField[i] != null) {
 				g.drawRoundRect(375 + 225 * i, 245, 150, 200, 10, 10);
-				g.drawString(playerField[i].name, 400 + 225 * i, 280);
-				g.drawString("攻:" + playerField[i].attack, 400 + 225 * i, 340);
-				g.drawString("防:" + playerField[i].defence, 400 + 225 * i, 400);
+				g.drawString(OplayerField[i].name, 400 + 225 * i, 280);
+				g.drawString("攻:" + OplayerField[i].attack, 400 + 225 * i, 340);
+				g.drawString("防:" + OplayerField[i].defence, 400 + 225 * i, 400);
 			}
 		}
 	}
@@ -147,39 +212,51 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 	public void handCard(Graphics g) {
 		Font fo3 = new Font("SansSerif", Font.PLAIN, 30);
 		buffer.setFont(fo3);
-		Card[] playerField = new Card[8];
-		playerField[0] = cd.findCardData("f");
-		playerField[1] = cd.findCardData("g");
-		playerField[2] = cd.findCardData("e");
-		playerField[3] = cd.findCardData("h");
-		playerField[4] = cd.findCardData("i");
-		playerField[5] = cd.findCardData("a");
-		playerField[6] = cd.findCardData("b");
-		playerField[7] = cd.findCardData("c");
-		for (int i = 0; i < 8; i++) {
-			if (playerField[i] != null && i % 2 == 0) {
-				g.drawRoundRect(175 + 80 * i + 225 * 2, 800, 150, 200, 10, 10);
-				g.drawString(playerField[i].name, 200 + 80 * i + 225 * 2, 835);
-				g.drawString("攻:" + playerField[i].attack, 185 + 80 * i + 225 * 2, 895);
-				g.drawString("防:" + playerField[i].defence, 185 + 80 * i + 225 * 2, 955);
+		playerHand[0] = cd.findCardData("f");
+		playerHand[1] = cd.findCardData("g");
+		playerHand[2] = cd.findCardData("e");
+		playerHand[3] = cd.findCardData("h");
+		playerHand[4] = cd.findCardData("i");
+		playerHand[5] = cd.findCardData("a");
+		playerHand[6] = cd.findCardData("b");
+		for (int i = 0; i < 7; i++) {
+			if (playerHand[i] != null && i % 2 == 0) {
+				g.drawRoundRect(825 + 45 * i, 800, 150, 200, 10, 10);
+				g.drawString("" + playerHand[i].name, 830 + 45 * i, 835);
+				g.drawString("攻:" + playerHand[i].attack, 830 + 45 * i, 895);
+				g.drawString("防:" + playerHand[i].defence, 830 + 45 * i, 955);
 			} else {
-				g.drawRoundRect(15 + 80 * i + 225 * 2, 800, 150, 200, 10, 10);
-				g.drawString(playerField[i].name, 40 + 80 * i + 225 * 2, 835);
-				g.drawString("攻:" + playerField[i].attack, 25 + 80 * i + 225 * 2, 895);
-				g.drawString("防:" + playerField[i].defence, 25 + 80 * i + 225 * 2, 955);
+				g.drawRoundRect(780 - 45 * i, 800, 150, 200, 10, 10);
+				g.drawString("" + playerHand[i].name, 785 - 45 * i, 835);
+				g.drawString("攻:" + playerHand[i].attack, 785 - 45 * i, 895);
+				g.drawString("防:" + playerHand[i].defence, 785 - 45 * i, 955);
 			}
 		}
 	}
 
 	public void handCardOpponent(Graphics g) {
-		g.drawRoundRect(95 + 225 * 2, 15, 150, 200, 10, 10);
-		g.drawRoundRect(175 + 225 * 2, 15, 150, 200, 10, 10);
-		g.drawRoundRect(255 + 225 * 2, 15, 150, 200, 10, 10);
-		g.drawRoundRect(335 + 225 * 2, 15, 150, 200, 10, 10);
-		g.drawRoundRect(415 + 225 * 2, 15, 150, 200, 10, 10);
-		g.drawRoundRect(495 + 225 * 2, 15, 150, 200, 10, 10);
-		g.drawRoundRect(575 + 225 * 2, 15, 150, 200, 10, 10);
-		g.drawRoundRect(655 + 225 * 2, 15, 150, 200, 10, 10);
+		Font fo3 = new Font("SansSerif", Font.PLAIN, 30);
+		buffer.setFont(fo3);
+		OplayerHand[0] = cd.findCardData("f");
+		OplayerHand[1] = cd.findCardData("g");
+		OplayerHand[2] = cd.findCardData("e");
+		OplayerHand[3] = cd.findCardData("h");
+		OplayerHand[4] = cd.findCardData("i");
+		OplayerHand[5] = cd.findCardData("a");
+		OplayerHand[6] = cd.findCardData("b");
+		for (int i = 0; i < 7; i++) {
+			if (OplayerHand[i] != null && !(i % 2 == 0)) {
+				g.drawRoundRect(870 + 45 * i, 15, 150, 200, 10, 10);
+				g.drawString("" + OplayerHand[i].cost, 875 + 45 * i, 50);
+				g.drawString("攻:" + OplayerHand[i].attack, 875 + 45 * i, 110);
+				g.drawString("防:" + OplayerHand[i].defence, 875 + 45 * i, 170);
+			} else {
+				g.drawRoundRect(825 - 45 * i, 15, 150, 200, 10, 10);
+				g.drawString("" + OplayerHand[i].cost, 830 - 45 * i, 50);
+				g.drawString("攻:" + OplayerHand[i].attack, 830 - 45 * i, 110);
+				g.drawString("防:" + OplayerHand[i].defence, 830 - 45 * i, 170);
+			}
+		}
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -191,7 +268,91 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		int x = e.getX();
 		int y = e.getY();
 		System.out.println("クリックした座標=(" + x + "," + y + ")");
+		if (555 < x && x < 645) {
 
+		} else if (645 < x && x < 735) {
+
+		} else if (735 < x && x < 825) {
+
+		} else if (825 < x && x < 915) {
+			// playerHand[0]
+			// ワンクリック時のデータ表示
+		} else if (915 < x && x < 1005) {
+
+		} else if (1005 < x && x < 1095) {
+
+		} else if (1095 < x && x < 1185) {
+
+		}
+
+		if (e.getClickCount() >= 2) {
+			// ダブルクリック
+			System.out.println("ダブルクリックしたよ");
+			/*
+			 * クリックした座標=(735,15) クリックした座標=(825,17) クリックした座標=(916,17) 555~1095
+			 * 90ごと！！
+			 */
+
+			for (int i = 0; i < 7; i++) {
+				if (555 <= x && x <= 1245 && 800 <= y && y <= 1000) {
+					card = playerHand[i];
+					
+					if (card == null) {
+						// 何もしない
+					} else if (playerField[1] != null && playerField[2] != null && playerField[3] != null
+							&& playerField[4] != null && playerField[5] != null) {
+						msg1 = "フィールド上に";
+						msg2 = "空きがありません";
+						msg3 = "";
+						repaint();
+					} else if (MP < card.cost) {
+						msg1 = "MP が不足しています";
+						msg2 = "";
+						msg3 = "";
+						repaint();
+					} else if (card.cost <= MP) {
+						msg1 = "場所の設定";
+						msg2 = "";
+						msg3 = "";
+						repaint();
+						count = i;
+						
+					}
+					/*
+					 * if (555 < x && x < 645) {
+					 * 
+					 * } else if (645 < x && x < 735) {
+					 * 
+					 * } else if (735 < x && x < 825) {
+					 * 
+					 * } else if (825 < x && x < 915) {
+					 * 
+					 * } else if (915 < x && x < 1005) {
+					 * 
+					 * } else if (1005 < x && x < 1095) {
+					 * 
+					 * } else if (1095 < x && x < 1185) {
+					 * 
+					 * }
+					 */
+
+				}
+			}
+			for (int i = 0; i < 5; i++) {
+				
+				if (x >= 1275 - 225 * i && x <= 1275 - 225 * i + 150 && y >= 545 && y <= 745) {
+					if (playerField[i] == null) {
+						playerField[i] = cd.findCardData(playerHand[count].name);
+						MP -= playerHand[count].cost;
+						msg1 = playerHand[count].name + "を召喚しました";
+						msg2 = "";
+						msg3 = "";
+						repaint();
+						playerHand[count]= null;
+					}
+				}
+			}
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
