@@ -34,6 +34,7 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 	Card[] OplayerField = new Card[5];
 	Card[] playerHand = new Card[7];
 	Card[] OplayerHand = new Card[7];
+	Deck mydeck = dd.findDeckList(1);
 	String msg1 = "";
 	String msg2 = "";
 	String msg3 = "";
@@ -55,21 +56,25 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 	Card card;
 	int Hns = -1;// 手札番号記憶
 	int Fns = -1;
-	int canAttack0 = -1;
-	int canAttack1 = -1;
-	int canAttack2 = 0;
-	int canAttack3 = -1;
-	int canAttack4 = -1;
+	int canAttack0 = 0;
+	int canAttack1 = 0;
+	int canAttack2 = 1;
+	int canAttack3 = 0;
+	int canAttack4 = 0;
 	boolean turnEnd;
 	boolean OturnEnd;
 	int state = -1;
-	
+	int deckcount = 3;
+	int[] sarray = new int[40];
+	String[] array = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17",
+			"18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35",
+			"36", "37", "38", "39" };
+
 	// 0は何も選択されていない状態
 	// 1は手札のカードが選択された状態
 	// 2は場のカードが選択された状態
 
 	public void init() {
-		Deck mydeck = dd.findDeckList(1);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		image = getImage(getCodeBase(), "");
@@ -80,18 +85,17 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		Dimension size = getSize();
 		back = createImage(size.width, size.height);
 		buffer = back.getGraphics();
-		
-		String[] array = {"1", "2", "3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"};
-	    List<String> list=Arrays.asList(array);
-	    Collections.shuffle(list);
-	    String[] array2 =(String[])list.toArray(new String[list.size()]);
-	    int[] sarray = new int[40];
-	    for(int i = 0 ; i < array2.length ; i++){
-	    	sarray[i] = Integer.parseInt(array2[i]);
-	    }
+
+		List<String> list = Arrays.asList(array);
+		Collections.shuffle(list);
+		String[] array2 = (String[]) list.toArray(new String[list.size()]);
+		for (int i = 0; i < array2.length; i++) {
+			sarray[i] = Integer.parseInt(array2[i]);
+		}
 		playerHand[0] = cd.findCardData(mydeck.deckList[sarray[0]]);
 		playerHand[1] = cd.findCardData(mydeck.deckList[sarray[1]]);
 		playerHand[2] = cd.findCardData(mydeck.deckList[sarray[2]]);
+		deck -= 3;
 
 		OplayerHand[0] = cd.findCardData("F");
 		OplayerHand[1] = cd.findCardData("G");
@@ -100,7 +104,7 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		OplayerHand[4] = cd.findCardData("I");
 		OplayerHand[5] = cd.findCardData("A");
 		OplayerHand[6] = cd.findCardData("B");
-		
+
 		playerField[2] = cd.findCardData(mydeck.deckList[sarray[0]]);
 		OplayerField[2] = cd.findCardData("B");
 	}
@@ -214,14 +218,6 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		// 反転させたい時はこんな感じ
 		g.drawImage(image, 1050, 1250, -800, -650, this);
 	}
-	
-	public static void shuffle(){
-	    String[] array = {"1", "2", "3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"};
-	    List<String> list=Arrays.asList(array);
-	    Collections.shuffle(list);
-	    String[] array2 =(String[])list.toArray(new String[list.size()]);
-	    String result = array2[0];
-	}
 
 	public void cardpaint(Graphics g) {
 		g.setColor(Color.black);
@@ -300,21 +296,59 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 		int x = e.getX();
 		int y = e.getY();
 		System.out.println("クリックした座標=(" + x + "," + y + ")");
-		if (555 < x && x < 645) {
-
-		} else if (645 < x && x < 735) {
-
-		} else if (735 < x && x < 825) {
-
-		} else if (825 < x && x < 915) {
-			// playerHand[0]
-			// ワンクリック時のデータ表示
-		} else if (915 < x && x < 1005) {
-
-		} else if (1005 < x && x < 1095) {
-
-		} else if (1095 < x && x < 1185) {
-
+		if (state == -1) {
+			if (canAttack0 == 1) {
+				canAttack0 += 1;
+			} else if (canAttack1 == 1) {
+				canAttack1 += 1;
+			} else if (canAttack2 == 1) {
+				canAttack2 += 1;
+			} else if (canAttack3 == 1) {
+				canAttack3 += 1;
+			} else if (canAttack4 == 1) {
+				canAttack4 += 1;
+			}
+			if (playerHand[0] == null) {
+				playerHand[0] = cd.findCardData(mydeck.deckList[sarray[deckcount]]);
+				deckcount += 1;
+				deck -= 1;
+				repaint();
+			} else if (playerHand[1] == null) {
+				playerHand[1] = cd.findCardData(mydeck.deckList[sarray[deckcount]]);
+				deckcount += 1;
+				deck -= 1;
+				repaint();
+			} else if (playerHand[2] == null) {
+				playerHand[2] = cd.findCardData(mydeck.deckList[sarray[deckcount]]);
+				deckcount += 1;
+				deck -= 1;
+				repaint();
+			} else if (playerHand[3] == null) {
+				playerHand[3] = cd.findCardData(mydeck.deckList[sarray[deckcount]]);
+				deckcount += 1;
+				deck -= 1;
+				repaint();
+			} else if (playerHand[4] == null) {
+				playerHand[4] = cd.findCardData(mydeck.deckList[sarray[deckcount]]);
+				deckcount += 1;
+				deck -= 1;
+				repaint();
+			} else if (playerHand[5] == null) {
+				playerHand[5] = cd.findCardData(mydeck.deckList[sarray[deckcount]]);
+				deckcount += 1;
+				deck -= 1;
+				repaint();
+			} else if (playerHand[6] == null) {
+				playerHand[6] = cd.findCardData(mydeck.deckList[sarray[deckcount]]);
+				deckcount += 1;
+				deck -= 1;
+				repaint();
+			} else {
+				boti += 1;
+				deck -= 1;
+				repaint();
+			}
+			state = 0;
 		}
 
 		if (e.getClickCount() >= 2) {
@@ -325,30 +359,13 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 			 * 90ごと！！
 			 */
 			// 召喚するモンスターを手札から選択
-			if(state == -1){
-				if(playerHand[0]==null){
-					
-				}else if(playerHand[1]==null){
-					
-				}else if(playerHand[2]==null){
-					
-				}else if(playerHand[3]==null){
-					
-				}else if(playerHand[4]==null){
-					
-				}else if(playerHand[5]==null){
-					
-				}else if(playerHand[6]==null){
-					
-				}else{
-					boti += 1;
-					deck -= 1;
-				}
-				state = 0;
-			}else
 			if (state == 0) {
-				if(1800<x&&x<1920&&440<y&&y<560){
-					
+				if (1800 < x && x < 1920 && 440 < y && y < 560) {
+					msg1 = "相手のターンです";
+					msg2 = "";
+					msg3 = "";
+					repaint = true;
+					state = 4;
 				}
 				for (int i = 0; i < 7; i++) {
 					if (800 < y && y < 1000) {
@@ -392,20 +409,22 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 				}
 				for (int i = 0; i < 5; i++) {
 					if (x >= 1275 - 225 * i && x <= 1275 - 225 * i + 150 && y >= 545 && y <= 745) {
-						if (canAttack0 == 0 || canAttack1 == 0 || canAttack2 == 0 || canAttack3 == 0
-								|| canAttack4 == 0) {
-							msg1 = "";
-							msg2 = "攻撃対象を";
-							msg3 = "選択してください";
-							repaint = true;
-							state = 2;
-							Fns = i;
-						} else {
-							msg1 = "攻撃できるモンスターがいません";
-							msg2 = "";
-							msg3 = "";
-							repaint = true;
-							state = 0;
+						if (playerField[i] != null) {
+							if (canAttack0 == 2 || canAttack1 == 2 || canAttack2 == 2 || canAttack3 == 2
+									|| canAttack4 == 2) {
+								msg1 = "";
+								msg2 = "攻撃対象を";
+								msg3 = "選択してください";
+								repaint = true;
+								state = 2;
+								Fns = i;
+							} else {
+								msg1 = "攻撃できるモンスターがいません";
+								msg2 = "";
+								msg3 = "";
+								repaint = true;
+								state = 0;
+							}
 						}
 					}
 				}
@@ -424,15 +443,15 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 								msg2 = "";
 								msg3 = "";
 								if (playerField[i] == playerField[0]) {
-									canAttack0 = -1;
+									canAttack0 = 1;
 								} else if (playerField[i] == playerField[1]) {
-									canAttack1 = -1;
+									canAttack1 = 1;
 								} else if (playerField[i] == playerField[2]) {
-									canAttack2 = -1;
+									canAttack2 = 1;
 								} else if (playerField[i] == playerField[3]) {
-									canAttack3 = -1;
+									canAttack3 = 1;
 								} else if (playerField[i] == playerField[4]) {
-									canAttack4 = -1;
+									canAttack4 = 1;
 								}
 								repaint = true;
 								playerHand[Hns] = null;
@@ -447,8 +466,8 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 			if (state == 2) {
 				for (int l = 0; l < 5; l++) {
 					if (375 + 225 * l <= x && x <= 375 + 225 * l + 150 && 245 <= y && y <= 445) {
-						if (!(canAttack0 == 0 || canAttack1 == 0 || canAttack2 == 0 || canAttack3 == 0
-								|| canAttack4 == 0)) {
+						if (!(canAttack0 == 2 || canAttack1 == 2 || canAttack2 == 2 || canAttack3 == 2
+								|| canAttack4 == 2)) {
 							msg1 = "このモンスターは";
 							msg2 = "次のターンまで";
 							msg3 = "攻撃できません";
@@ -468,23 +487,23 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 								playerField[Fns] = null;
 							}
 							if (l == 0) {
-								canAttack0 = -1;
+								canAttack0 = 1;
 							} else if (l == 1) {
-								canAttack1 = -1;
+								canAttack1 = 1;
 							} else if (l == 2) {
-								canAttack2 = -1;
+								canAttack2 = 1;
 							} else if (l == 3) {
-								canAttack3 = -1;
+								canAttack3 = 1;
 							} else if (l == 4) {
-								canAttack4 = -1;
+								canAttack4 = 1;
 							}
 							state = 0;
 							break;
 						}
 					}
-					if (1525 < x && x < 1775 && 255 < y && y < 200) {
-						if (!(canAttack0 == 0 || canAttack1 == 0 || canAttack2 == 0 || canAttack3 == 0
-								|| canAttack4 == 0)) {
+					if (1525 < x && x < 1775 && 200 < y && y < 255) {
+						if (!(canAttack0 == 2 || canAttack1 == 2 || canAttack2 == 2 || canAttack3 == 2
+								|| canAttack4 == 2)) {
 							msg1 = "このモンスターは";
 							msg2 = "次のターンまで";
 							msg3 = "攻撃できません";
@@ -496,33 +515,37 @@ public class PlayField extends Applet implements MouseListener, MouseMotionListe
 							HPy -= playerField[Fns].attack;
 							repaint = true;
 							if (Fns == 0) {
-								canAttack0 = -1;
+								canAttack0 = 1;
 							} else if (Fns == 1) {
-								canAttack1 = -1;
+								canAttack1 = 1;
 							} else if (Fns == 2) {
-								canAttack2 = -1;
+								canAttack2 = 1;
 							} else if (Fns == 3) {
-								canAttack3 = -1;
+								canAttack3 = 1;
 							} else if (Fns == 4) {
-								canAttack4 = -1;
+								canAttack4 = 1;
 							}
-							state = 0;
-							break;
 						}
+						state = 0;
+						break;
 					}
 				}
 			}
 		}
-		if (repaint == true){
+		if(playerField[0]==null){
+			canAttack0 = 0;
+		}else if(playerField[1]==null){
+			canAttack1 = 0;
+		}else if(playerField[2]==null){
+			canAttack2 = 0;
+		}else if(playerField[3]==null){
+			canAttack3 = 0;
+		}else if(playerField[4]==null){
+			canAttack4 = 0;
+		}
+		if (repaint == true) {
 			repaint();
 		}
-
-		int canAttack0 = 0;
-		int canAttack1 = 0;
-		int canAttack2 = 0;
-		int canAttack3 = 0;
-		int canAttack4 = 0;
-		turnEnd = true;
 	}
 
 	public void mouseReleased(MouseEvent e) {
