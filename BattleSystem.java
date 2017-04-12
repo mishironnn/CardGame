@@ -1,6 +1,17 @@
 package CardGame;
 
-import java.util.List;
+/*
+ * もし、falseならばアタック可能
+ * 長押ししながらのカーソル移動を行う
+ * そのまま相手のキャラクターの上に持っていくと攻撃になる
+ * 
+ * */
+
+/*
+ * もし、trueならば何もできなくする
+ * 
+ * */
+
 
 public class BattleSystem {
 	PlayField p = new PlayField();
@@ -15,13 +26,5 @@ public class BattleSystem {
 			
 		}
 	}
-	public static int doro(List<Card> d,int HP) {
-		
-		if(d.get(0)==null){
-			return HP=0;
-		}
-		d.get(0);
-		return HP;
-		
-	}
+	
 }
