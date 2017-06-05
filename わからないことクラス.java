@@ -16,7 +16,6 @@ public static int doro(List<Card> d,int HP) {
 	これはどういうことなんですか?
 	
 	*/
-	
 	/*
 	 * public void cardpaint(Graphics g) {
 		g.setColor(Color.black);
